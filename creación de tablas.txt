@@ -1,0 +1,44 @@
+Base de datos: login_db
+
+Ejecutar los siguientes comandos SQL:
+
+CREATE TABLE usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    cedula VARCHAR(20) NOT NULL UNIQUE,
+    correo VARCHAR(100) NOT NULL UNIQUE,
+    contraseña VARCHAR(255) NOT NULL,
+    fecha_registro DATETIME NOT NULL
+);
+
+CREATE TABLE declaraciones (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    cedula VARCHAR(20),
+    tipo_formulario VARCHAR(100),
+    periodo_año INT,
+    periodo_mes INT,
+    fecha_presentacion DATETIME,
+    estado VARCHAR(20),
+    FOREIGN KEY (cedula) REFERENCES usuarios(cedula)
+);
+
+CREATE TABLE actividades_economicas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    declaracion_id INT,
+    descripcion TEXT,
+    ventas_gravadas DECIMAL(15,2),
+    ventas_exentas DECIMAL(15,2),
+    ventas_no_sujetas DECIMAL(15,2),
+    compras_gravadas DECIMAL(15,2),
+    credito_fiscal DECIMAL(15,2),
+    FOREIGN KEY (declaracion_id) REFERENCES declaraciones(id)
+);
+
+CREATE TABLE consolidados (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    declaracion_id INT,
+    total_ventas_gravadas DECIMAL(15,2),
+    total_ingresos_exentos DECIMAL(15,2),
+    total_compras_deducibles DECIMAL(15,2),
+    total_credito_fiscal DECIMAL(15,2),
+    FOREIGN KEY (declaracion_id) REFERENCES declaraciones(id)
+);
